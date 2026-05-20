@@ -2,8 +2,6 @@
 
 Club website for Rancho Maria Men's Club. Public-facing pages for announcements, schedule, and standings links, plus a password-protected admin panel for managing content.
 
-https://rmmc.tooper.io
-
 [![Netlify Status](https://api.netlify.com/api/v1/badges/979b24d4-b2f4-4ad0-9a93-f2e8c0a07801/deploy-status)](https://app.netlify.com/projects/ranchomaria/deploys)
 
 ## Stack
