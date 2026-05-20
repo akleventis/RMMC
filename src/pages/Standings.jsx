@@ -25,8 +25,6 @@ export default function Standings() {
             <a
               key={link.id}
               href={link.url}
-              target="_blank"
-              rel="noreferrer"
               className="w-full max-w-xs text-center bg-green hover:bg-green-light text-white font-sans text-sm sm:text-base px-5 py-2.5 rounded-lg transition-colors no-underline"
             >
               {link.label}

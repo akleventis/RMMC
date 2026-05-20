@@ -52,7 +52,7 @@ export default function AdminSchedule() {
     if (!window.confirm('Are you sure you want to delete this row?')) return
     const { error } = await supabase.from('schedule').delete().eq('id', id)
     if (error) flash('error', 'Error deleting — try again.')
-    else { flash('success', 'Row deleted.'); load() }
+    else { flash('success', 'Row deleted.'); refresh() }
   }
 
   async function handleReorder(id, direction) {

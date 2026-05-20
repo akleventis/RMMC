@@ -54,7 +54,7 @@ export default function AdminStandings() {
     if (!window.confirm('Are you sure you want to delete this link?')) return
     const { error } = await supabase.from('links').delete().eq('id', id)
     if (error) flash('error', 'Error deleting — try again.')
-    else { flash('success', 'Link deleted.'); load() }
+    else { flash('success', 'Link deleted.'); refresh() }
   }
 
   async function handleReorder(id, direction) {
