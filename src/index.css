@@ -1,0 +1,32 @@
+@import "tailwindcss";
+
+/*
+  Design tokens — extend Tailwind's theme with RMMC brand colors.
+  All components reference these via Tailwind classes like bg-green, text-gold, etc.
+*/
+@theme {
+  --color-green:       #1a5c38;
+  --color-green-light: #2d7a50;
+  --color-gold:        #c9a84c;
+  --color-cream:       #f8f6f1;
+  --color-card:        #ffffff;
+  --color-muted:       #6b7280;
+  --color-danger:      #c0392b;
+  --color-danger-dark: #a93226;
+
+  --font-serif: 'Georgia', serif;
+  --font-sans:  'Arial', sans-serif;
+
+  --radius-card: 0.5rem;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-serif);
+  background-color: var(--color-cream);
+  min-height: 100%;
+  overflow-y: auto;
+}
