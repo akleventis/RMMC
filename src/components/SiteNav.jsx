@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
+import logo from '../assets/rm_logo.png'
 
 export default function SiteNav() {
   const [open, setOpen] = useState(false)
@@ -20,8 +21,9 @@ export default function SiteNav() {
     <nav className="bg-green shadow-md">
       {/* Desktop + mobile top bar */}
       <div className="px-6 flex items-center gap-8 h-[60px]">
-        <NavLink to="/" className="text-gold font-bold tracking-wide text-lg no-underline mr-4">
-          ⛳ RMMC Golf
+        <NavLink to="/" className="text-gold font-bold tracking-wide text-sm sm:text-base no-underline mr-4 flex items-center gap-2">
+          <img src={logo} alt="RMMC" className="h-8 w-auto" />
+          Rancho Maria Men's Club
         </NavLink>
 
         {/* Desktop links */}

@@ -4,17 +4,25 @@ import StatusMsg from '../../components/StatusMsg'
 
 export default function AdminSchedule() {
   const [rows, setRows] = useState([])
+  const [title, setTitle] = useState('')
   const [status, setStatus] = useState(null)
   const [tick, setTick] = useState(0)
   const saveTimers = useRef({})
+  const titleTimer = useRef(null)
   const flashTimer = useRef(null)
 
   const refresh = () => setTick((t) => t + 1)
 
   useEffect(() => {
     let cancelled = false
-    supabase.from('schedule').select('*').order('display_order').then(({ data }) => {
-      if (!cancelled) setRows(data ?? [])
+    Promise.all([
+      supabase.from('settings').select('value').eq('key', 'schedule_title').single(),
+      supabase.from('schedule').select('*').order('display_order'),
+    ]).then(([{ data: t }, { data: s }]) => {
+      if (!cancelled) {
+        if (t?.value) setTitle(t.value)
+        setRows(s ?? [])
+      }
     })
     return () => { cancelled = true }
   }, [tick])
@@ -23,6 +31,16 @@ export default function AdminSchedule() {
     clearTimeout(flashTimer.current)
     setStatus({ type, text })
     flashTimer.current = setTimeout(() => setStatus(null), 5000)
+  }
+
+  function handleTitleChange(value) {
+    setTitle(value)
+    clearTimeout(titleTimer.current)
+    titleTimer.current = setTimeout(async () => {
+      const { error } = await supabase.from('settings').update({ value }).eq('key', 'schedule_title')
+      if (error) flash('error', 'Error saving title — try again.')
+      else flash('success', 'Saved!')
+    }, 800)
   }
 
   function handleChange(id, field, value) {
@@ -71,7 +89,14 @@ export default function AdminSchedule() {
       <h2 className="font-sans text-lg sm:text-2xl text-gray-800 border-b border-gray-200 pb-3 mb-2">
         Schedule
       </h2>
-      <p className="font-sans text-sm text-muted mb-6">Click any field to edit. Changes save automatically.</p>
+      <p className="font-sans text-sm text-muted mb-4">Click any field to edit. Changes save automatically.</p>
+
+      <div className="mb-6">
+        <label className="block font-sans text-xs text-muted mb-1">Page Title</label>
+        <input value={title} onChange={(e) => handleTitleChange(e.target.value)}
+          placeholder="e.g. 2026 Tournament Schedule"
+          className="w-full border border-gray-200 rounded-lg px-3 py-2.5 font-serif text-base focus:outline-none focus:border-green" />
+      </div>
 
       <StatusMsg msg={status} />
 
