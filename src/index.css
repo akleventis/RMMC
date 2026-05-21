@@ -14,19 +14,27 @@
   --color-danger:      #c0392b;
   --color-danger-dark: #a93226;
 
-  --font-serif: 'Georgia', serif;
-  --font-sans:  'Arial', sans-serif;
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-sans:  'Inter', system-ui, Arial, sans-serif;
 
-  --radius-card: 0.5rem;
+  --radius-card: 0.75rem;
+  --breakpoint-xs: 23rem;
 }
 
 html {
   height: 100%;
+  scroll-behavior: smooth;
 }
 
 body {
-  font-family: var(--font-serif);
+  font-family: var(--font-sans);
   background-color: var(--color-cream);
   min-height: 100%;
   overflow-y: auto;
+  -webkit-font-smoothing: antialiased;
+}
+
+*:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 2px;
 }

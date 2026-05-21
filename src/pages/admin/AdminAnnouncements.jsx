@@ -119,7 +119,7 @@ export default function AdminAnnouncements() {
           type="text"
           value={pageTitle}
           onChange={(e) => handleTitleChange(e.target.value)}
-          className="w-full border border-gray-300 rounded-lg px-4 py-3 font-serif text-base focus:outline-none focus:border-green"
+          className="w-full border border-gray-300 rounded-lg px-4 py-3 font-sans text-base focus:outline-none focus:border-green"
         />
       </div>
 

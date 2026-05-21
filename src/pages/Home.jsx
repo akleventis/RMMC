@@ -19,12 +19,19 @@ export default function Home() {
   }, [])
 
   return (
-    <div className="max-w-3xl mx-auto px-6 py-10">
-      <h1 className="text-xl sm:text-3xl font-serif text-green border-b-2 border-gold pb-2 mb-6">
-        {title}
-      </h1>
+    <div className="max-w-3xl mx-auto px-6 py-12 sm:py-16">
+      <div className="mb-8">
+        <h1 className="font-serif text-3xl sm:text-5xl text-green tracking-tight leading-tight mb-3">
+          {title}
+        </h1>
+        <div className="h-[3px] w-14 bg-gold rounded-full" />
+      </div>
       {loading ? (
-        <p className="text-muted font-sans text-center py-10">Loading…</p>
+        <div className="flex flex-col gap-5">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="bg-card rounded-xl h-24 animate-pulse opacity-60" />
+          ))}
+        </div>
       ) : (
         <div className="flex flex-col gap-5">
           {announcements.map((a) => (

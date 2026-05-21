@@ -7,9 +7,9 @@ export default function AnnouncementCard({ body }) {
     .filter(Boolean)
 
   return (
-    <div className="bg-card rounded-[var(--radius-card)] shadow-sm border-l-4 border-gold px-5 sm:px-7 py-5">
+    <div className="bg-card rounded-xl shadow border-l-[3px] border-gold px-6 sm:px-8 py-6 transition-all duration-200 hover:-translate-y-px hover:shadow-md" style={{ boxShadow: '0 1px 8px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04)' }}>
       {paragraphs.map((p, i) => (
-        <p key={i} className={`text-gray-800 leading-relaxed${i > 0 ? ' mt-3' : ''}`}>
+        <p key={i} className={`text-gray-700 leading-relaxed text-base${i > 0 ? ' mt-4' : ''}`}>
           {p}
         </p>
       ))}

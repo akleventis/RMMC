@@ -13,19 +13,22 @@ export default function Standings() {
   }, [])
 
   return (
-    <div className="max-w-3xl mx-auto px-6 py-10">
-      <h1 className="text-xl sm:text-3xl font-serif text-green border-b-2 border-gold pb-2 mb-6">
-        Standings
-      </h1>
-      <div className="bg-card rounded-[var(--radius-card)] shadow-sm p-6 sm:p-10 flex flex-col items-center gap-3">
+    <div className="max-w-3xl mx-auto px-6 py-12 sm:py-16">
+      <div className="mb-8">
+        <h1 className="font-serif text-3xl sm:text-5xl text-green tracking-tight leading-tight mb-3">
+          Resources
+        </h1>
+        <div className="h-[3px] w-14 bg-gold rounded-full" />
+      </div>
+      <div className="bg-card rounded-xl shadow-sm p-8 sm:p-12 flex flex-col items-center gap-3">
         {links.length === 0 ? (
-          <p className="text-muted font-sans text-sm">Standings links not yet configured.</p>
+          <p className="text-muted text-sm">No resources have been added yet.</p>
         ) : (
           links.map((link) => (
             <a
               key={link.id}
               href={link.url}
-              className="w-full max-w-xs text-center bg-green hover:bg-green-light text-white font-sans text-sm sm:text-base px-5 py-2.5 rounded-lg transition-colors no-underline"
+className="w-full max-w-xs text-center bg-green hover:bg-green-light text-white font-sans text-sm sm:text-base px-5 py-3 rounded-xl transition-all duration-200 hover:-translate-y-px hover:shadow-lg no-underline"
             >
               {link.label}
             </a>

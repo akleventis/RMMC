@@ -42,10 +42,13 @@ export default function AdminStandings() {
   }
 
   async function handleAdd() {
+    await Promise.all(
+      links.map((l) => supabase.from('links').update({ label: l.label, url: l.url }).eq('id', l.id))
+    )
     const maxOrder = links.length ? Math.max(...links.map((l) => l.display_order)) : 0
     const { error } = await supabase
       .from('links')
-      .insert({ label: 'New Link', url: '', display_order: maxOrder + 1 })
+      .insert({ label: '', url: '', display_order: maxOrder + 1 })
     if (error) flash('error', 'Error adding link — try again.')
     else refresh()
   }
@@ -71,10 +74,10 @@ export default function AdminStandings() {
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
       <h2 className="font-sans text-lg sm:text-2xl text-gray-800 border-b border-gray-200 pb-3 mb-2">
-        Standings Links
+        Resources
       </h2>
       <p className="font-sans text-sm text-muted mb-6">
-        Each link appears as a button on the public Standings page.
+        Each link appears as a button on the public Resources page.
       </p>
 
       <StatusMsg msg={status} />
@@ -93,14 +96,13 @@ export default function AdminStandings() {
                 <label className="block font-sans text-sm font-medium text-gray-700 mb-1.5">Button Label</label>
                 <input type="text" value={link.label}
                   onChange={(e) => handleChange(link.id, 'label', e.target.value)}
-                  className="w-full border border-gray-300 rounded-lg px-4 py-3 font-serif text-base focus:outline-none focus:border-green" />
+                  className="w-full border border-gray-300 rounded-lg px-4 py-3 font-sans text-base focus:outline-none focus:border-green" />
               </div>
               <div>
-                <label className="block font-sans text-sm font-medium text-gray-700 mb-1.5">Google Sheets Link</label>
-                <p className="font-sans text-xs text-muted mb-1.5">Copy the link from Google Sheets and paste it here.</p>
+                <label className="block font-sans text-sm font-medium text-gray-700 mb-1.5">URL</label>
                 <input type="url" value={link.url}
                   onChange={(e) => handleChange(link.id, 'url', e.target.value)}
-                  placeholder="Paste Google Sheets link here"
+                  placeholder="https://"
                   className="w-full border border-gray-300 rounded-lg px-4 py-3 font-mono text-sm focus:outline-none focus:border-green" />
               </div>
               <div className="flex gap-3 pt-1">
