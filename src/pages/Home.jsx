@@ -3,7 +3,7 @@ import { supabase } from '../lib/supabase'
 import AnnouncementCard from '../components/AnnouncementCard'
 
 export default function Home() {
-  const [title, setTitle] = useState('Board Announcements')
+  const [title, setTitle] = useState('')
   const [announcements, setAnnouncements] = useState([])
   const [loading, setLoading] = useState(true)
 

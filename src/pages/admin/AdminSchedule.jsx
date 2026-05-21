@@ -78,14 +78,20 @@ export default function AdminSchedule() {
       {/* Mobile: card list */}
       <div className="flex flex-col gap-3 sm:hidden">
         {rows.map((row, i) => (
-          <div key={row.id} className="bg-white border border-gray-200 rounded-lg p-4">
+          <div key={row.id} className={`bg-white border border-gray-200 rounded-lg p-4 ${row.completed ? 'opacity-60' : ''}`}>
             <div className="flex gap-2 mb-3">
               <button onClick={() => handleReorder(row.id, 'up')} disabled={i === 0}
                 className="font-sans text-sm bg-gray-100 hover:bg-gray-200 px-3 py-1.5 rounded disabled:opacity-30">▲</button>
               <button onClick={() => handleReorder(row.id, 'down')} disabled={i === rows.length - 1}
                 className="font-sans text-sm bg-gray-100 hover:bg-gray-200 px-3 py-1.5 rounded disabled:opacity-30">▼</button>
+              <label className="ml-auto flex items-center gap-1.5 font-sans text-xs text-muted cursor-pointer">
+                <input type="checkbox" checked={!!row.completed}
+                  onChange={(e) => handleChange(row.id, 'completed', e.target.checked)}
+                  className="accent-green w-4 h-4" />
+                Done
+              </label>
               <button onClick={() => handleDelete(row.id)}
-                className="ml-auto bg-danger hover:bg-danger-dark text-white font-sans text-sm px-4 py-1.5 rounded-lg">Delete</button>
+                className="bg-danger hover:bg-danger-dark text-white font-sans text-sm px-4 py-1.5 rounded-lg">Delete</button>
             </div>
             <label className="block font-sans text-xs text-muted mb-1">Date</label>
             <input value={row.event_date} onChange={(e) => handleChange(row.id, 'event_date', e.target.value)}
@@ -107,12 +113,13 @@ export default function AdminSchedule() {
               <th className="font-sans text-xs uppercase tracking-wide text-muted px-4 py-3 text-left w-10"></th>
               <th className="font-sans text-xs uppercase tracking-wide text-muted px-4 py-3 text-left w-40">Date</th>
               <th className="font-sans text-xs uppercase tracking-wide text-muted px-4 py-3 text-left">Event</th>
+              <th className="font-sans text-xs uppercase tracking-wide text-muted px-4 py-3 text-center w-20">Done</th>
               <th className="font-sans text-xs uppercase tracking-wide text-muted px-4 py-3 text-left w-24"></th>
             </tr>
           </thead>
           <tbody>
             {rows.map((row, i) => (
-              <tr key={row.id} className="border-t border-gray-100">
+              <tr key={row.id} className={`border-t border-gray-100 ${row.completed ? 'opacity-60' : ''}`}>
                 <td className="px-3 py-2">
                   <div className="flex flex-col gap-1">
                     <button onClick={() => handleReorder(row.id, 'up')} disabled={i === 0}
@@ -130,6 +137,11 @@ export default function AdminSchedule() {
                   <input value={row.event_name} onChange={(e) => handleChange(row.id, 'event_name', e.target.value)}
                     placeholder="Event name"
                     className="w-full border border-gray-200 rounded-lg px-3 py-2.5 font-serif text-base focus:outline-none focus:border-green" />
+                </td>
+                <td className="px-3 py-2 text-center">
+                  <input type="checkbox" checked={!!row.completed}
+                    onChange={(e) => handleChange(row.id, 'completed', e.target.checked)}
+                    className="accent-green w-4 h-4 cursor-pointer" />
                 </td>
                 <td className="px-3 py-2">
                   <button onClick={() => handleDelete(row.id)}
