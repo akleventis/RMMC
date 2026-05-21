@@ -4,9 +4,9 @@ export default function ScheduleTable({ rows }) {
       {/* Mobile: cards */}
       <div className="flex flex-col gap-2 sm:hidden">
         {rows.map((row) => (
-          <div key={row.id} className={`bg-card rounded-lg shadow-sm px-4 py-3 flex gap-3 items-baseline border-l-4 ${row.completed ? 'border-gray-300 opacity-50' : 'border-green'}`}>
-            <span className={`font-bold text-sm whitespace-nowrap w-24 flex-shrink-0 ${row.completed ? 'text-gray-400' : 'text-green'}`}>{row.event_date}</span>
-            <span className={`text-sm ${row.completed ? 'text-gray-400 line-through' : 'text-gray-800'}`}>{row.event_name}</span>
+          <div key={row.id} className={`bg-card rounded-lg shadow-sm px-4 py-3 flex gap-3 items-baseline border-l-4 ${row.completed ? 'border-gray-300 opacity-70' : 'border-green'}`}>
+            <span className={`font-bold text-sm whitespace-nowrap w-24 flex-shrink-0 ${row.completed ? 'text-gray-500' : 'text-green'}`}>{row.event_date}</span>
+            <span className={`text-sm ${row.completed ? 'text-gray-500 line-through' : 'text-gray-800'}`}>{row.event_name}</span>
           </div>
         ))}
       </div>
@@ -22,9 +22,9 @@ export default function ScheduleTable({ rows }) {
           </thead>
           <tbody>
             {rows.map((row, i) => (
-              <tr key={row.id} className={`${i % 2 === 1 ? 'bg-amber-50' : 'bg-card'} ${row.completed ? 'opacity-50' : ''}`}>
-                <td className={`px-5 py-3.5 font-bold whitespace-nowrap border-b border-gray-100 text-base ${row.completed ? 'text-gray-400' : 'text-green'}`}>{row.event_date}</td>
-                <td className={`px-5 py-3.5 border-b border-gray-100 text-base ${row.completed ? 'text-gray-400 line-through' : ''}`}>{row.event_name}</td>
+              <tr key={row.id} className={`${i % 2 === 1 ? 'bg-amber-50' : 'bg-card'} ${row.completed ? 'opacity-70' : ''}`}>
+                <td className={`px-5 py-3.5 font-bold whitespace-nowrap border-b border-gray-100 text-base ${row.completed ? 'text-gray-500' : 'text-green'}`}>{row.event_date}</td>
+                <td className={`px-5 py-3.5 border-b border-gray-100 text-base ${row.completed ? 'text-gray-500 line-through' : ''}`}>{row.event_name}</td>
               </tr>
             ))}
           </tbody>
