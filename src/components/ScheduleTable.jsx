@@ -28,7 +28,7 @@ function googleCalUrl(eventName, startStr, endStr) {
   return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${text}&dates=${dates}`
 }
 
-function downloadIcs(eventName, startStr, endStr) {
+function openAppleCalendar(eventName, startStr, endStr) {
   const start = parseLocalDate(startStr)
   const last = endStr ? parseLocalDate(endStr) : parseLocalDate(startStr)
   const dtEnd = new Date(last.getFullYear(), last.getMonth(), last.getDate() + 1)
@@ -46,15 +46,9 @@ function downloadIcs(eventName, startStr, endStr) {
     'END:VCALENDAR',
   ].join('\r\n')
 
-  const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' })
-  const url = URL.createObjectURL(blob)
-  const a = document.createElement('a')
-  a.href = url
-  a.download = `${eventName.replace(/[^a-z0-9]/gi, '-')}.ics`
-  document.body.appendChild(a)
-  a.click()
-  document.body.removeChild(a)
-  URL.revokeObjectURL(url)
+  // Navigating to data:text/calendar triggers the native "Add to Calendar"
+  // sheet on iOS Safari and macOS — no file download needed
+  window.location.href = 'data:text/calendar;charset=utf-8,' + encodeURIComponent(ics)
 }
 
 export default function ScheduleTable({ rows }) {
@@ -110,7 +104,7 @@ export default function ScheduleTable({ rows }) {
                 Google Calendar
               </a>
               <button
-                onClick={() => { downloadIcs(row.event_name, row.event_date, row.event_date_end); setOpenId(null) }}
+                onClick={() => { openAppleCalendar(row.event_name, row.event_date, row.event_date_end); setOpenId(null) }}
                 className="flex items-center gap-3 w-full px-4 py-3 hover:bg-gray-50 transition-colors text-gray-700 font-sans text-sm border-t border-gray-100"
               >
                 <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill="none">
