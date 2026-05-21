@@ -4,6 +4,7 @@ import StatusMsg from '../../components/StatusMsg'
 
 export default function AdminStandings() {
   const [links, setLinks] = useState([])
+  const [saved, setSaved] = useState({})   // id -> { label, url } as last persisted
   const [status, setStatus] = useState(null)
   const [saving, setSaving] = useState(null)
   const [tick, setTick] = useState(0)
@@ -14,7 +15,10 @@ export default function AdminStandings() {
   useEffect(() => {
     let cancelled = false
     supabase.from('links').select('*').order('display_order').then(({ data }) => {
-      if (!cancelled) setLinks(data ?? [])
+      if (cancelled) return
+      const rows = data ?? []
+      setLinks(rows)
+      setSaved(Object.fromEntries(rows.map((l) => [l.id, { label: l.label, url: l.url }])))
     })
     return () => { cancelled = true }
   }, [tick])
@@ -23,6 +27,11 @@ export default function AdminStandings() {
     clearTimeout(flashTimer.current)
     setStatus({ type, text })
     flashTimer.current = setTimeout(() => setStatus(null), 5000)
+  }
+
+  function isDirty(link) {
+    const s = saved[link.id]
+    return !s || link.label !== s.label || link.url !== s.url
   }
 
   function handleChange(id, field, value) {
@@ -37,14 +46,15 @@ export default function AdminStandings() {
       .update({ label: link.label, url: link.url })
       .eq('id', id)
     setSaving(null)
-    if (error) flash('error', 'Error saving — try again.')
-    else flash('success', 'Link saved!')
+    if (error) {
+      flash('error', 'Error saving — try again.')
+    } else {
+      setSaved((prev) => ({ ...prev, [id]: { label: link.label, url: link.url } }))
+      flash('success', 'Link saved!')
+    }
   }
 
   async function handleAdd() {
-    await Promise.all(
-      links.map((l) => supabase.from('links').update({ label: l.label, url: l.url }).eq('id', l.id))
-    )
     const maxOrder = links.length ? Math.max(...links.map((l) => l.display_order)) : 0
     const { error } = await supabase
       .from('links')
@@ -106,13 +116,15 @@ export default function AdminStandings() {
                   className="w-full border border-gray-300 rounded-lg px-4 py-3 font-mono text-sm focus:outline-none focus:border-green" />
               </div>
               <div className="flex gap-3 pt-1">
-                <button
-                  onClick={() => handleSave(link.id)}
-                  disabled={saving === link.id}
-                  className="bg-green hover:bg-green-light text-white font-sans text-sm px-5 py-2 rounded-lg transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
-                >
-                  {saving === link.id ? 'Saving…' : 'Save'}
-                </button>
+                {isDirty(link) && (
+                  <button
+                    onClick={() => handleSave(link.id)}
+                    disabled={saving === link.id}
+                    className="bg-green hover:bg-green-light text-white font-sans text-sm px-5 py-2 rounded-lg transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+                  >
+                    {saving === link.id ? 'Saving…' : 'Save'}
+                  </button>
+                )}
                 <button onClick={() => handleDelete(link.id)}
                   className="bg-danger hover:bg-danger-dark text-white font-sans text-sm px-5 py-2 rounded-lg transition-colors">
                   Delete

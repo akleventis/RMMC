@@ -118,17 +118,11 @@ export default function AdminSchedule() {
               <button onClick={() => handleDelete(row.id)}
                 className="bg-danger hover:bg-danger-dark text-white font-sans text-sm px-4 py-1.5 rounded-lg">Delete</button>
             </div>
-            <div className="flex gap-2 mb-3">
-              <div className="flex-1">
-                <label className="block font-sans text-xs text-muted mb-1">Start Date</label>
-                <input type="date" value={row.event_date || ''} onChange={(e) => handleChange(row.id, 'event_date', e.target.value)}
-                  className="w-full border border-gray-200 rounded-lg px-3 py-2.5 font-sans text-sm focus:outline-none focus:border-green" />
-              </div>
-              <div className="flex-1">
-                <label className="block font-sans text-xs text-muted mb-1">End Date <span className="text-muted/50">(optional)</span></label>
-                <input type="date" value={row.event_date_end || ''} onChange={(e) => handleChange(row.id, 'event_date_end', e.target.value)}
-                  className="w-full border border-gray-200 rounded-lg px-3 py-2.5 font-sans text-sm focus:outline-none focus:border-green" />
-              </div>
+            <div className="mb-3">
+              <label className="block font-sans text-xs text-muted mb-1">Date</label>
+              <input type="text" value={row.event_date || ''} onChange={(e) => handleChange(row.id, 'event_date', e.target.value)}
+                placeholder="e.g. Jan 10"
+                className="w-full border border-gray-200 rounded-lg px-3 py-2.5 font-sans text-sm focus:outline-none focus:border-green" />
             </div>
             <label className="block font-sans text-xs text-muted mb-1">Event</label>
             <input value={row.event_name} onChange={(e) => handleChange(row.id, 'event_name', e.target.value)}
