@@ -77,10 +77,12 @@ There is no self-serve signup. Admin accounts are created directly in the Supaba
 
 ## Supabase keep-alive
 
-Supabase pauses free-tier projects after ~7 days without activity. To prevent that, a Netlify Scheduled Function (`netlify/functions/keep-alive.mjs`) runs daily at midnight UTC and calls the `keep_alive()` Postgres function, which updates the timestamp in the `keep_alive` table.
+Supabase pauses free-tier projects after ~7 days without activity. To prevent that, a Netlify Scheduled Function (`netlify/functions/keep-alive.mjs`) runs daily at 12:00 UTC and calls the `keep_alive()` Postgres function, which updates the timestamp in the `keep_alive` table.
+
+Pings are intentionally irregular: days are grouped into fixed 3-day windows (`WINDOW_DAYS`), and a deterministic hash of the window number picks one day in each to ping. On all other days the function logs `skipped` and exits. That averages ~2.3 pings/week with gaps of 1–5 days (max gap is `2 × WINDOW_DAYS − 1`, so don't raise `WINDOW_DAYS` above 4). Because the pick is deterministic, the expected ping days can be recomputed from the date.
 
 - `keep_alive` has RLS enabled with no policies, so the anon key can't read or write it directly. The only access is through `keep_alive()` (`security definer`, executable by `anon`).
-- Logs: Netlify → Cloud compute → Functions → keep-alive (has a **Run now** button).
+- Logs: Netlify → Cloud compute → Functions → keep-alive (has a **Run now** button — it returns `skipped` unless today is a ping day).
 - Check last ping: `select pinged_at from keep_alive;` in the Supabase SQL Editor.
 - Test locally: `node --env-file=.env -e "import('./netlify/functions/keep-alive.mjs').then(m => m.default())"`
 
