@@ -14,7 +14,7 @@ export default function Login() {
     supabase.auth.getSession().then(({ data }) => {
       if (data.session) navigate('/admin/announcements', { replace: true })
     })
-  }, [])
+  }, [navigate])
 
   async function handleSubmit(e) {
     e.preventDefault()

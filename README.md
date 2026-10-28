@@ -4,6 +4,17 @@ Club website for Rancho Maria Men's Club. Public-facing pages for announcements,
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/979b24d4-b2f4-4ad0-9a93-f2e8c0a07801/deploy-status)](https://app.netlify.com/projects/ranchomaria/deploys)
 
+## Setup
+
+```bash
+mise install                    # Node 24 (pinned in mise.toml)
+mise run setup                  # secret-scanning hook + npm ci
+op inject -i .env.tpl -o .env   # Supabase URL + anon key from 1Password
+mise run dev
+```
+
+Secrets: 1Password, **Dev** vault, item **`rmmc`**. Variables are listed in `.env.example` and below.
+
 ## Stack
 
 - **React 19** + **Vite** — SPA, builds to `dist/`
@@ -122,4 +133,4 @@ grant execute on function public.keep_alive() to anon;
 | `VITE_SUPABASE_URL` | Project URL from Supabase dashboard |
 | `VITE_SUPABASE_ANON_KEY` | Anon/public key from Supabase dashboard |
 
-Set in `.env` locally and in Netlify under Environment variables. Both are also read by the keep-alive function, so their Netlify scope must include Functions.
+Set in `.env` locally (`op inject -i .env.tpl -o .env`) and in Netlify under Environment variables. Both are also read by the keep-alive function, so their Netlify scope must include Functions.
